@@ -2,6 +2,8 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "profesores")
 public class Profesor {
@@ -18,7 +20,8 @@ public class Profesor {
     private String telefono;
     @OneToOne
     private Direccion direccion;
-
+    @OneToMany(mappedBy = "profesor")
+    private Set<Modulo> modulos;
     public Profesor() {
     }
 
@@ -28,6 +31,23 @@ public class Profesor {
         this.apellidoDos = apellidoDos;
         this.telefono = telefono;
         this.direccion = direccion;
+    }
+
+    public Profesor(String nombre, String apellidoUno, String apellidoDos, String telefono, Direccion direccion, Set<Modulo> modulos) {
+        this.nombre = nombre;
+        this.apellidoUno = apellidoUno;
+        this.apellidoDos = apellidoDos;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.modulos = modulos;
+    }
+
+    public Set<Modulo> getModulos() {
+        return modulos;
+    }
+
+    public void setModulos(Set<Modulo> modulos) {
+        this.modulos = modulos;
     }
 
     public int getId() {

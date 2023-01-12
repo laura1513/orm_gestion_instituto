@@ -15,6 +15,8 @@ public class Modulo implements Serializable {
     @Column(length = 30)
     private String curso;
     private int horas;
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    private Profesor profesor;
 
     public Modulo() {
     }
@@ -23,6 +25,21 @@ public class Modulo implements Serializable {
         this.nombre = nombre;
         this.curso = curso;
         this.horas = horas;
+    }
+
+    public Modulo(String nombre, String curso, int horas, Profesor profesor) {
+        this.nombre = nombre;
+        this.curso = curso;
+        this.horas = horas;
+        this.profesor = profesor;
+    }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
     }
 
     public int getId() {
@@ -64,6 +81,7 @@ public class Modulo implements Serializable {
                 ", nombre='" + nombre + '\'' +
                 ", curso='" + curso + '\'' +
                 ", horas=" + horas +
+                ", profesor=" + profesor +
                 '}';
     }
 }
