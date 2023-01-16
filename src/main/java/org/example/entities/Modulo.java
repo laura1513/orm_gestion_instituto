@@ -3,6 +3,7 @@ package org.example.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "modulos")
@@ -18,6 +19,9 @@ public class Modulo implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private Profesor profesor;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "modulos")
+    private List<Alumno> alumnos;
+
     public Modulo() {
     }
 
@@ -32,6 +36,23 @@ public class Modulo implements Serializable {
         this.curso = curso;
         this.horas = horas;
         this.profesor = profesor;
+    }
+
+    public Modulo(int id, String nombre, String curso, int horas, Profesor profesor, List<Alumno> alumnos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.curso = curso;
+        this.horas = horas;
+        this.profesor = profesor;
+        this.alumnos = alumnos;
+    }
+
+    public List<Alumno> getAlumnos() {
+        return alumnos;
+    }
+
+    public void setAlumnos(List<Alumno> alumnos) {
+        this.alumnos = alumnos;
     }
 
     public Profesor getProfesor() {
@@ -82,6 +103,7 @@ public class Modulo implements Serializable {
                 ", curso='" + curso + '\'' +
                 ", horas=" + horas +
                 ", profesor=" + profesor +
+                ", alumnos=" + alumnos +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package org.example.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "alumnos")
@@ -20,6 +21,8 @@ public class Alumno implements Serializable {
     private String nia;
     @Column(unique = true, length = 9)
     private String telefono;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "alumnos")
+    private List<Modulo> modulos;
 
     public Alumno() {
     }
@@ -30,6 +33,16 @@ public class Alumno implements Serializable {
         this.apellidoDos = apellidoDos;
         this.nia = nia;
         this.telefono = telefono;
+    }
+
+    public Alumno(int id, String nombre, String apellidoUno, String apellidoDos, String nia, String telefono, List<Modulo> modulos) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidoUno = apellidoUno;
+        this.apellidoDos = apellidoDos;
+        this.nia = nia;
+        this.telefono = telefono;
+        this.modulos = modulos;
     }
 
     public int getId() {
