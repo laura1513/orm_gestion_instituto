@@ -3,6 +3,7 @@ package org.example.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,8 +22,8 @@ public class Alumno implements Serializable {
     private String nia;
     @Column(unique = true, length = 9)
     private String telefono;
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "alumnos")
-    private List<Modulo> modulos;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "alumnos")
+    private List<Modulo> modulos = new ArrayList<>();
 
     public Alumno() {
     }
@@ -35,8 +36,7 @@ public class Alumno implements Serializable {
         this.telefono = telefono;
     }
 
-    public Alumno(int id, String nombre, String apellidoUno, String apellidoDos, String nia, String telefono, List<Modulo> modulos) {
-        this.id = id;
+    public Alumno( String nombre, String apellidoUno, String apellidoDos, String nia, String telefono, List<Modulo> modulos) {
         this.nombre = nombre;
         this.apellidoUno = apellidoUno;
         this.apellidoDos = apellidoDos;
@@ -93,6 +93,14 @@ public class Alumno implements Serializable {
         this.telefono = telefono;
     }
 
+    public List<Modulo> getModulos() {
+        return modulos;
+    }
+
+    public void setModulos(List<Modulo> modulos) {
+        this.modulos = modulos;
+    }
+
     @Override
     public String toString() {
         return "Alumno{" +
@@ -101,7 +109,7 @@ public class Alumno implements Serializable {
                 ", apellidoUno='" + apellidoUno + '\'' +
                 ", apellidoDos='" + apellidoDos + '\'' +
                 ", nia='" + nia + '\'' +
-                ", telefono='" + telefono + '\'' +
+                ", telefono='" + telefono +
                 '}';
     }
 }

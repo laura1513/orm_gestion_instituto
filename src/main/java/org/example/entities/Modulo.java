@@ -3,7 +3,9 @@ package org.example.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "modulos")
@@ -19,8 +21,8 @@ public class Modulo implements Serializable {
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private Profesor profesor;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "modulos")
-    private List<Alumno> alumnos;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Alumno> alumnos = new ArrayList<>();
 
     public Modulo() {
     }
@@ -105,5 +107,30 @@ public class Modulo implements Serializable {
                 ", profesor=" + profesor +
                 ", alumnos=" + alumnos +
                 '}';
+    }
+
+    public void anyadirAl(Alumno alumno) {
+        this.alumnos.add(alumno);
+        alumno.getModulos().add(this);
+    }
+    public void deleteAl(Alumno alumno) {
+        this.alumnos.remove(alumno);
+        alumno.getModulos().remove(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) {
+            return true;
+        }
+        if(o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Modulo modulo = (Modulo) o;
+        return Objects.equals(this.nombre, modulo.nombre);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.nombre);
     }
 }

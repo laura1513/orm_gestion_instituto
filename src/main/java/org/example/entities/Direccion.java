@@ -19,6 +19,10 @@ public class Direccion implements Serializable {
     @Column(length = 30)
     private String provincia;
 
+    @OneToOne(fetch =FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @PrimaryKeyJoinColumn
+    private Profesor profesor;
+
     public Direccion() {
     }
 
@@ -27,6 +31,14 @@ public class Direccion implements Serializable {
         this.numero = numero;
         this.poblacion = poblacion;
         this.provincia = provincia;
+    }
+
+    public Direccion(String calle, int numero, String poblacion, String provincia, Profesor profesor) {
+        this.calle = calle;
+        this.numero = numero;
+        this.poblacion = poblacion;
+        this.provincia = provincia;
+        this.profesor = profesor;
     }
 
     public int getId() {
@@ -67,6 +79,14 @@ public class Direccion implements Serializable {
 
     public void setProvincia(String provincia) {
         this.provincia = provincia;
+    }
+
+    public Profesor getProfesor() {
+        return profesor;
+    }
+
+    public void setProfesor(Profesor profesor) {
+        this.profesor = profesor;
     }
 
     @Override

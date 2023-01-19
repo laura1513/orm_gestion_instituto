@@ -1,5 +1,7 @@
 package org.example.repositories;
 
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.PersistenceException;
 import org.example.entities.Direccion;
 import org.example.entities.Modulo;
 import org.example.utils.HibernateUtil;
@@ -15,7 +17,11 @@ public class ModuloRepository implements Repository<Modulo> {
     @Override
     public Modulo create(Modulo modulo) {
         s.getTransaction().begin();
-        s.persist(modulo);
+        try {
+            s.persist(modulo);
+        } catch (PersistenceException ex) {
+            System.out.println("~~~~Error al borrar el modulo~~~~");
+        }
         s.getTransaction().commit();
         return modulo;
     }
@@ -47,7 +53,11 @@ public class ModuloRepository implements Repository<Modulo> {
     @Override
     public void delete(Modulo modulo) {
         s.getTransaction().begin();
-        s.remove(modulo);
+        try {
+            s.remove(modulo);
+        } catch (OptimisticLockException ex) {
+            System.out.println("~~~~Error al borrar el modulo~~~~");
+        }
         s.getTransaction().commit();
     }
     public void close() {

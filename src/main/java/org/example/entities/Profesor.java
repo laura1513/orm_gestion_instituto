@@ -2,6 +2,7 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,10 +19,11 @@ public class Profesor {
     private String apellidoDos;
     @Column(unique = true, length = 9)
     private String telefono;
-    @OneToOne
+    @OneToOne(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private Direccion direccion;
-    @OneToMany(mappedBy = "profesor")
-    private Set<Modulo> modulos;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profesor", cascade = CascadeType.ALL)
+    private Set<Modulo> modulos = new HashSet<>();
     public Profesor() {
     }
 

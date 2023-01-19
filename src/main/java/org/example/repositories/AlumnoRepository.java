@@ -1,5 +1,7 @@
 package org.example.repositories;
 
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.PersistenceException;
 import org.example.entities.Alumno;
 import org.example.utils.HibernateUtil;
 import org.hibernate.Session;
@@ -14,7 +16,11 @@ public class AlumnoRepository implements Repository<Alumno> {
     @Override
     public Alumno create(Alumno alumno) {
         s.getTransaction().begin();
-        s.persist(alumno);
+        try {
+            s.persist(alumno);
+        } catch (PersistenceException ex) {
+            System.out.println("~~~~Error al crear el alumno~~~~");
+        }
         s.getTransaction().commit();
         return alumno;
     }
@@ -46,7 +52,11 @@ public class AlumnoRepository implements Repository<Alumno> {
     @Override
     public void delete(Alumno alumno) {
         s.getTransaction().begin();
-        s.remove(alumno);
+        try {
+            s.remove(alumno);
+        } catch (OptimisticLockException ex) {
+            System.out.println("~~~~Error al borrar el alumno~~~~");
+        }
         s.getTransaction().commit();
     }
     public void close() {

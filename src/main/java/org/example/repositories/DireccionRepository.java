@@ -1,5 +1,7 @@
 package org.example.repositories;
 
+import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.PersistenceException;
 import org.example.entities.Alumno;
 import org.example.entities.Direccion;
 import org.example.utils.HibernateUtil;
@@ -15,7 +17,11 @@ public class DireccionRepository implements Repository<Direccion> {
     @Override
     public Direccion create(Direccion direccion) {
         s.getTransaction().begin();
-        s.persist(direccion);
+        try {
+            s.persist(direccion);
+        } catch (PersistenceException ex) {
+            System.out.println("~~~~Error al crear la direccion~~~~");
+        }
         s.getTransaction().commit();
         return direccion;
     }
@@ -46,9 +52,13 @@ public class DireccionRepository implements Repository<Direccion> {
 
     @Override
     public void delete(Direccion direccion) {
-        s.getTransaction().begin();
-        s.remove(direccion);
-        s.getTransaction().commit();
+            s.getTransaction().begin();
+            try {
+                s.remove(direccion);
+            } catch (OptimisticLockException ex) {
+                System.out.println("~~~~Error al borrar la direccion~~~~");
+            }
+            s.getTransaction().commit();
     }
     public void close() {
         s.close();
